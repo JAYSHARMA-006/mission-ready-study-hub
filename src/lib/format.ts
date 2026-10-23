@@ -47,7 +47,7 @@ export const MAX_UPLOAD_MB = 100;
 
 export function fileExtension(name: string): string {
   const parts = name.split(".");
-  return parts.length > 1 ? parts[parts.length - 1].toLowerCase() : "";
+  return parts.length > 1 ? (parts[parts.length - 1] ?? "").toLowerCase() : "";
 }
 
 export function isAllowedUpload(name: string): boolean {

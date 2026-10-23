@@ -19,18 +19,6 @@ async function requireAdmin(context: { supabase: any; userId: string }) {
   return context;
 }
 
-const withAdmin = (handler: (ctx: any) => Promise<any>) =>
-  createServerFn({ method: "POST" })
-    .middleware([requireSupabaseAuth])
-    .handler(async (ctx) => {
-      try {
-        await requireAdmin(ctx.context);
-      } catch {
-        return { ok: false as const, message: "Admin access required." };
-      }
-      return handler(ctx);
-    });
-
 export const getCurrentUserRole = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
