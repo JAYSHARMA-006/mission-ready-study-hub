@@ -106,11 +106,6 @@ const FOLDER_SCHEMA = z.object({
   examCategoryId: z.string().uuid().nullable(),
 });
 
-export const saveFolder = withAdmin(async ({ data }: { data: z.infer<typeof FOLDER_SCHEMA> & { userId: string } }) =>
-  undefined, // placeholder replaced below
-) as any;
-
-// The functional implementation (kept separate for clarity):
 export const createFolder = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(FOLDER_SCHEMA.omit({ id: true }))
@@ -423,5 +418,3 @@ export const markContactMessageRead = createServerFn({ method: "POST" })
     return { ok: true as const };
   });
 
-// remove placeholder export if tree-shaking complains
-void saveFolder;
