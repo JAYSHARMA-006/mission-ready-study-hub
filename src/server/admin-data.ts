@@ -98,19 +98,6 @@ export const listFoldersAdmin = createServerFn({ method: "GET" })
     };
   });
 
-const FOLDER_SCHEMA = z.object({
-  id: z.string().uuid().optional(),
-  name: z.string().min(1).max(120),
-  description: z.string().max(500).default(""),
-  parentFolderId: z.string().uuid().nullable(),
-  examCategoryId: z.string().uuid().nullable(),
-});
-
-export const saveFolder = withAdmin(async ({ data }: { data: z.infer<typeof FOLDER_SCHEMA> & { userId: string } }) =>
-  undefined, // placeholder replaced below
-) as any;
-
-// The functional implementation (kept separate for clarity):
 export const createFolder = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(FOLDER_SCHEMA.omit({ id: true }))
