@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AdminSetupRouteImport } from './routes/admin-setup'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BrowseRouteImport } from './routes/browse'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDownloadsRouteImport } from './routes/_authenticated/downloads'
 
@@ -41,6 +42,11 @@ const BrowseRoute = BrowseRouteImport.update({
   path: '/browse',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/admin-setup': typeof AdminSetupRoute
   '/auth': typeof AuthRoute
   '/browse': typeof BrowseRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/downloads': typeof AuthenticatedDownloadsRoute
 }
@@ -65,6 +72,7 @@ export interface FileRoutesByTo {
   '/admin-setup': typeof AdminSetupRoute
   '/auth': typeof AuthRoute
   '/browse': typeof BrowseRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/downloads': typeof AuthenticatedDownloadsRoute
 }
@@ -75,15 +83,29 @@ export interface FileRoutesById {
   '/admin-setup': typeof AdminSetupRoute
   '/auth': typeof AuthRoute
   '/browse': typeof BrowseRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/downloads': typeof AuthenticatedDownloadsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/admin-setup' | '/auth' | '/browse' | '/dashboard' | '/downloads'
+    | '/'
+    | '/admin-setup'
+    | '/auth'
+    | '/browse'
+    | '/admin'
+    | '/dashboard'
+    | '/downloads'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin-setup' | '/auth' | '/browse' | '/dashboard' | '/downloads'
+  to:
+    | '/'
+    | '/admin-setup'
+    | '/auth'
+    | '/browse'
+    | '/admin'
+    | '/dashboard'
+    | '/downloads'
   id:
     | '__root__'
     | '/'
@@ -91,6 +113,7 @@ export interface FileRouteTypes {
     | '/admin-setup'
     | '/auth'
     | '/browse'
+    | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/_authenticated/downloads'
   fileRoutesById: FileRoutesById
@@ -140,6 +163,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -158,11 +188,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDownloadsRoute: typeof AuthenticatedDownloadsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDownloadsRoute: AuthenticatedDownloadsRoute,
 }
