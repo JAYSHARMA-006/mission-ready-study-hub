@@ -41,19 +41,15 @@ export const getAdminOverview = createServerFn({ method: "GET" })
       return null;
     }
     const admin = supabaseAdmin;
-    const count = (table: string, filters?: Record<string, string>) => {
-      let q = admin.from(table).select("*", { count: "exact", head: true });
-      for (const [col, val] of Object.entries(filters ?? {})) q = q.eq(col, val);
-      return q;
-    };
+    const countOf = (q: ReturnType<typeof admin.from>) => q.select("id", { count: "exact", head: true });
 
     const [materials, folders, students, downloads, drafts, recent, recentStudents] =
       await Promise.all([
-        count("study_materials"),
-        count("folders"),
-        count("profiles"),
-        count("downloads"),
-        count("study_materials", { publication_status: "draft" }),
+        countOf(admin.from("study_materials")),
+        countOf(admin.from("folders")),
+        countOf(admin.from("profiles")),
+        countOf(admin.from("downloads")),
+        countOf(admin.from("study_materials")).eq("publication_status", "draft"),
         admin
           .from("study_materials")
           .select("id, title, file_type, file_size, publication_status, download_count, created_at, exam_categories(name, slug)")

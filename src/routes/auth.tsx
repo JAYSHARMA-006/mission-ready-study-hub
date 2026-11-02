@@ -20,9 +20,10 @@ function sanitizeRedirect(value: unknown): string | undefined {
 }
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>): AuthSearch => ({
-    redirect: sanitizeRedirect(search.redirect),
-  }),
+  validateSearch: (search: Record<string, unknown>): AuthSearch => {
+    const redirect = sanitizeRedirect(search["redirect"]);
+    return redirect === undefined ? {} : { redirect };
+  },
   component: AuthPage,
   head: () => ({
     meta: [
