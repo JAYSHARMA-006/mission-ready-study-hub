@@ -121,38 +121,18 @@ export const adminExists = createServerFn({ method: "GET" }).handler(async () =>
 });
 
 // ------------------------------------------------------------------
-// First-time admin setup. Protected by a server-side secret; the
-// owner enters the same value entered when the ADMIN_SETUP_KEY secret
-// was created. Never exposed to the client.
+// First-time admin setup. Available only while no admin role exists;
+// the form locks itself once an admin account has been created.
 // ------------------------------------------------------------------
 const SETUP_SCHEMA = z.object({
   email: z.string().email(),
   password: z.string().min(10).max(72),
-  setupKey: z.string().min(8).max(200),
 });
-
-function safeEqual(a: string, b: string): boolean {
-  const bytesA = new TextEncoder().encode(a);
-  const bytesB = new TextEncoder().encode(b);
-  const len = Math.max(bytesA.length, bytesB.length);
-  let diff = bytesA.length ^ bytesB.length;
-  for (let i = 0; i < len; i++) {
-    diff |= (bytesA[i] ?? 0) ^ (bytesB[i] ?? 0);
-  }
-  return diff === 0;
-}
 
 export const setupAdmin = createServerFn({ method: "POST" })
   .validator(SETUP_SCHEMA)
   .handler(async ({ data }) => {
     const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
-    const expected = process.env["ADMIN_SETUP_KEY"];
-    if (!expected) {
-      return { ok: false as const, message: "Admin setup is not configured yet." };
-    }
-    if (!safeEqual(data.setupKey.trim(), expected)) {
-      return { ok: false as const, message: "Invalid setup key." };
-    }
     const admin = supabaseAdmin;
     const { count } = await admin
       .from("user_roles")

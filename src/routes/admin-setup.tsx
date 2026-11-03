@@ -31,13 +31,12 @@ function AdminSetupPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [setupKey, setSetupKey] = useState("");
   const [busy, setBusy] = useState(false);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
-    const res = await setupAdmin({ data: { email, password, setupKey } });
+    const res = await setupAdmin({ data: { email, password } });
     setBusy(false);
     if (!res.ok) {
       toast.error(res.message);
@@ -98,20 +97,6 @@ function AdminSetupPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="At least 10 characters"
                   />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="setup-key">Setup key</Label>
-                  <Input
-                    id="setup-key"
-                    type="password"
-                    required
-                    value={setupKey}
-                    onChange={(e) => setSetupKey(e.target.value)}
-                    placeholder="The ADMIN_SETUP_KEY you saved"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    The secret setup key generated when the academy was configured.
-                  </p>
                 </div>
                 <Button type="submit" className="w-full" disabled={busy}>
                   {busy ? "Creating admin…" : "Create admin account"}
