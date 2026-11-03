@@ -11,7 +11,7 @@ const MATERIAL_SELECT = "*, exam_categories(name, slug), folders(name)";
  */
 export const requestDownload = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator(z.object({ materialId: z.string().uuid() }))
+  .validator(z.object({ materialId: z.string().uuid() }))
   .handler(async ({ data, context }) => {
     const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const { data: profile } = await context.supabase

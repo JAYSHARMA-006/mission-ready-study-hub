@@ -24,7 +24,7 @@ export const getExamCategories = createServerFn({ method: "GET" }).handler(async
 });
 
 export const getLatestMaterials = createServerFn({ method: "GET" })
-  .inputValidator(z.object({ limit: z.number().int().min(1).max(12).default(6) }))
+  .validator(z.object({ limit: z.number().int().min(1).max(12).default(6) }))
   .handler(async ({ data }) => {
     const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const db = getPublicClient();
@@ -47,7 +47,7 @@ export type BrowseParams = {
 };
 
 export const browseMaterials = createServerFn({ method: "GET" })
-  .inputValidator(z.object({
+  .validator(z.object({
     categoryId: z.string().uuid().optional(),
     folderId: z.string().uuid().optional(),
     search: z.string().max(120).optional(),
@@ -85,7 +85,7 @@ export const browseMaterials = createServerFn({ method: "GET" })
   });
 
 export const listFolders = createServerFn({ method: "GET" })
-  .inputValidator(z.object({ categoryId: z.string().uuid().optional() }))
+  .validator(z.object({ categoryId: z.string().uuid().optional() }))
   .handler(async ({ data }) => {
     const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const db = getPublicClient();
@@ -140,7 +140,7 @@ function safeEqual(a: string, b: string): boolean {
 }
 
 export const setupAdmin = createServerFn({ method: "POST" })
-  .inputValidator(SETUP_SCHEMA)
+  .validator(SETUP_SCHEMA)
   .handler(async ({ data }) => {
     const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const expected = process.env["ADMIN_SETUP_KEY"];
@@ -178,7 +178,7 @@ export const setupAdmin = createServerFn({ method: "POST" })
   });
 
 export const submitContactMessage = createServerFn({ method: "POST" })
-  .inputValidator(z.object({
+  .validator(z.object({
     name: z.string().min(1).max(120),
     email: z.string().email(),
     subject: z.string().max(200).default(""),
