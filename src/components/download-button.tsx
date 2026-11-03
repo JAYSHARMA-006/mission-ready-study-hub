@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { requestDownload } from "@/server/student-data";
+import { requestDownload } from "@/lib/student-data.functions";
 
 async function triggerBrowserDownload(url: string) {
   const a = document.createElement("a");

@@ -1,6 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { getPublicClient, supabaseAdmin } from "@/server/db.server";
 import type { Database } from "@/integrations/supabase/types";
 
 type ExamCategory = Database["public"]["Tables"]["exam_categories"]["Row"];
@@ -27,6 +26,7 @@ export const getExamCategories = createServerFn({ method: "GET" }).handler(async
 export const getLatestMaterials = createServerFn({ method: "GET" })
   .inputValidator(z.object({ limit: z.number().int().min(1).max(12).default(6) }))
   .handler(async ({ data }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const db = getPublicClient();
     const { data: materials, error } = await db
       .from("study_materials")
@@ -55,6 +55,7 @@ export const browseMaterials = createServerFn({ method: "GET" })
     sort: z.enum(["newest", "oldest", "most-downloaded"]).default("newest"),
   }))
   .handler(async ({ data }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const db = getPublicClient();
     let query = db
       .from("study_materials")
@@ -86,6 +87,7 @@ export const browseMaterials = createServerFn({ method: "GET" })
 export const listFolders = createServerFn({ method: "GET" })
   .inputValidator(z.object({ categoryId: z.string().uuid().optional() }))
   .handler(async ({ data }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const db = getPublicClient();
     let query = db.from("folders").select("*").order("name");
     if (data.categoryId) query = query.eq("exam_category_id", data.categoryId);
@@ -140,6 +142,7 @@ function safeEqual(a: string, b: string): boolean {
 export const setupAdmin = createServerFn({ method: "POST" })
   .inputValidator(SETUP_SCHEMA)
   .handler(async ({ data }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const expected = process.env["ADMIN_SETUP_KEY"];
     if (!expected) {
       return { ok: false as const, message: "Admin setup is not configured yet." };
@@ -182,6 +185,7 @@ export const submitContactMessage = createServerFn({ method: "POST" })
     message: z.string().min(1).max(4000),
   }))
   .handler(async ({ data }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const db = getPublicClient();
     const { error } = await db.from("contact_messages").insert({
       name: data.name.trim(),

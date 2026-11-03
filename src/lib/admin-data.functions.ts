@@ -1,7 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { supabaseAdmin } from "@/server/db.server";
 
 /**
  * Every handler below first verifies, server-side, that the caller holds the
@@ -22,6 +21,7 @@ async function requireAdmin(context: { supabase: any; userId: string }) {
 export const getCurrentUserRole = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const { data } = await context.supabase
       .from("user_roles")
       .select("role")
@@ -35,6 +35,7 @@ export const getCurrentUserRole = createServerFn({ method: "GET" })
 export const getAdminOverview = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -78,6 +79,7 @@ export const getAdminOverview = createServerFn({ method: "GET" })
 export const listFoldersAdmin = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -106,6 +108,7 @@ export const createFolder = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(FOLDER_SCHEMA.omit({ id: true }))
   .handler(async ({ data, context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -126,6 +129,7 @@ export const updateFolder = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(FOLDER_SCHEMA)
   .handler(async ({ data, context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -148,6 +152,7 @@ export const deleteFolder = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(z.object({ id: z.string().uuid() }))
   .handler(async ({ data, context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -179,6 +184,7 @@ export const saveMaterial = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(MATERIAL_SCHEMA)
   .handler(async ({ data, context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -215,6 +221,7 @@ export const setMaterialStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(z.object({ id: z.string().uuid(), status: z.enum(["published", "draft"]) }))
   .handler(async ({ data, context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -232,6 +239,7 @@ export const deleteMaterial = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(z.object({ id: z.string().uuid() }))
   .handler(async ({ data, context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -268,6 +276,7 @@ export const listMaterialsAdmin = createServerFn({ method: "GET" })
     pageSize: z.number().int().min(5).max(50).default(15),
   }))
   .handler(async ({ data, context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -305,6 +314,7 @@ export const adminFilePreviewUrl = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(z.object({ materialId: z.string().uuid() }))
   .handler(async ({ data, context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -329,6 +339,7 @@ export const listStudentsAdmin = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator(z.object({ search: z.string().max(120).optional() }))
   .handler(async ({ data, context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -362,6 +373,7 @@ export const setStudentStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(z.object({ studentId: z.string().uuid(), status: z.enum(["active", "disabled"]) }))
   .handler(async ({ data, context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -383,6 +395,7 @@ export const setStudentStatus = createServerFn({ method: "POST" })
 export const listContactMessages = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {
@@ -401,6 +414,7 @@ export const markContactMessageRead = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(z.object({ id: z.string().uuid() }))
   .handler(async ({ data, context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     try {
       await requireAdmin(context);
     } catch {

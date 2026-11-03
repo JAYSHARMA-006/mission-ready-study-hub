@@ -18,7 +18,7 @@ import {
   getExamCategories,
   getLatestMaterials,
   submitContactMessage,
-} from "@/server/public-data";
+} from "@/lib/public-data.functions";
 import { fileTypeLabel, formatFileSize, formatDate } from "@/lib/format";
 import heroImg from "@/assets/hero-defense.jpg";
 
