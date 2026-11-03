@@ -14,6 +14,7 @@ export type MaterialWithMeta = StudyMaterial & {
 const MATERIAL_SELECT = "*, exam_categories(name, slug), folders(name)";
 
 export const getExamCategories = createServerFn({ method: "GET" }).handler(async () => {
+  const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
   const db = getPublicClient();
   const { data, error } = await db
     .from("exam_categories")
@@ -97,6 +98,7 @@ export const listFolders = createServerFn({ method: "GET" })
   });
 
 export const getMaterialCountsByFolder = createServerFn({ method: "GET" }).handler(async () => {
+  const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
   const db = getPublicClient();
   const { data, error } = await db
     .from("study_materials")
@@ -111,6 +113,7 @@ export const getMaterialCountsByFolder = createServerFn({ method: "GET" }).handl
 });
 
 export const adminExists = createServerFn({ method: "GET" }).handler(async () => {
+  const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
   const db = getPublicClient();
   const { data, error } = await db.rpc("admin_exists");
   if (error) throw new Error(error.message);
