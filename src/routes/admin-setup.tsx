@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { adminExists, setupAdmin } from "@/server/public-data";
+import { adminExists, setupAdmin } from "@/lib/public-data.functions";
 import { PublicShell } from "@/components/public-shell";
 
 export const Route = createFileRoute("/admin-setup")({

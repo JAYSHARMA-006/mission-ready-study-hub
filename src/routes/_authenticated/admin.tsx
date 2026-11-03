@@ -26,7 +26,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PublicShell } from "@/components/public-shell";
-import { getAdminOverview, listMaterialsAdmin, listFoldersAdmin, createFolder, deleteFolder, saveMaterial, setMaterialStatus, deleteMaterial, adminFilePreviewUrl, listStudentsAdmin, setStudentStatus, listContactMessages, markContactMessageRead } from "@/server/admin-data";
+import { getAdminOverview, listMaterialsAdmin, listFoldersAdmin, createFolder, deleteFolder, saveMaterial, setMaterialStatus, deleteMaterial, adminFilePreviewUrl, listStudentsAdmin, setStudentStatus, listContactMessages, markContactMessageRead } from "@/lib/admin-data.functions";
 import { fileTypeLabel, formatFileSize, formatDate } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/admin")({

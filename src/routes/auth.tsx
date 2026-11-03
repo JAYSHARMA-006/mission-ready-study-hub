@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { lovable } from "@/integrations/lovable";
 import { supabase } from "@/integrations/supabase/client";
-import { getCurrentUserRole } from "@/server/admin-data";
+import { getCurrentUserRole } from "@/lib/admin-data.functions";
 import { PublicShell } from "@/components/public-shell";
 
 type AuthSearch = { redirect?: string };

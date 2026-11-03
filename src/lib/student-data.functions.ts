@@ -1,7 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { supabaseAdmin } from "@/server/db.server";
 
 const MATERIAL_SELECT = "*, exam_categories(name, slug), folders(name)";
 
@@ -12,8 +11,9 @@ const MATERIAL_SELECT = "*, exam_categories(name, slug), folders(name)";
  */
 export const requestDownload = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator(z.object({ materialId: z.string().uuid() }))
+  .validator(z.object({ materialId: z.string().uuid() }))
   .handler(async ({ data, context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const { data: profile } = await context.supabase
       .from("profiles")
       .select("account_status")
@@ -64,6 +64,7 @@ export const requestDownload = createServerFn({ method: "POST" })
 export const getStudentDashboard = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const db = context.supabase;
 
     const [profileRes, recentRes, popularRes, categoriesRes, downloadsRes] = await Promise.all([
@@ -103,6 +104,7 @@ export const getStudentDashboard = createServerFn({ method: "GET" })
 export const getMyDownloads = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { getPublicClient, supabaseAdmin } = await import("@/server/db.server");
     const { data, error } = await context.supabase
       .from("downloads")
       .select(

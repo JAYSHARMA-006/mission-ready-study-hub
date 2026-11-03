@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { PublicShell } from "@/components/public-shell";
 import { DownloadButton } from "@/components/download-button";
-import { getExamCategories, listFolders, browseMaterials, getMaterialCountsByFolder } from "@/server/public-data";
+import { getExamCategories, listFolders, browseMaterials, getMaterialCountsByFolder } from "@/lib/public-data.functions";
 import { fileTypeLabel, formatFileSize, formatDate } from "@/lib/format";
 
 type BrowseSearch = {

@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PublicShell } from "@/components/public-shell";
 import { DownloadButton } from "@/components/download-button";
-import { getStudentDashboard } from "@/server/student-data";
+import { getStudentDashboard } from "@/lib/student-data.functions";
 import { fileTypeLabel, formatFileSize, formatDate } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
