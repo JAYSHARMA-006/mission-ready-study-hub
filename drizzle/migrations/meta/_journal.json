@@ -8,6 +8,13 @@
       "when": 1792773606898,
       "tag": "0000_opa_core_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795081588927,
+      "tag": "0001_restrict_public_folder_visibility",
+      "breakpoints": true
     }
   ]
 }
